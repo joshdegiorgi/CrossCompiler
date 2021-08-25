@@ -1,14 +1,10 @@
 package gui.controller
 
 import core.App
-import core.state.StateManager
-import core.state.MainState
+import core.state.{MainState, StateManager}
 import gui.UIUtilities
 import gui.UIUtilities._
-import javafx.fxml.{FXML, FXMLLoader}
-import javafx.scene.layout.StackPane
-import javafx.stage.{Modality, Popup, Stage}
-import scalafx.scene.control.Dialog
+import javafx.stage.FileChooser
 import scalafxml.core.macros.sfxml
 
 @sfxml
@@ -20,8 +16,8 @@ class StartSceneController {
   }
 
   def popupOnClick(): Unit = {
-    val dialog = createStage(UIUtilities.Popup)(dialogStageBuilder)
-    dialog.showAndWait()
+    val test = loadFileDialog(App.getStage())
+    println(test)
   }
 
 

@@ -12,10 +12,6 @@ object App extends JFXApp {
 
   StateManager.transition(StartState())
 
-  val popup = new Popup
-  val parent = loadParent(UIUtilities.Popup).get
-  popup.getContent.add(parent)
-
   def setStage(stage: PrimaryStage): Unit = {
     this.stage = stage
   }

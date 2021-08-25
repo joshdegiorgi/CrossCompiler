@@ -3,11 +3,12 @@ package gui
 import global.ResourcePaths.FX_Layouts
 import io.IO
 import javafx.scene.{Parent, Scene}
-import javafx.stage.{Modality, Stage}
+import javafx.stage.{FileChooser, Modality, Stage, Window}
 import scalafx.application.JFXApp.PrimaryStage
 import scalafx.scene
 import scalafxml.core.{FXMLView, NoDependencyResolver}
 
+import java.io.File
 import java.net.URL
 import scala.util.{Failure, Success, Try}
 
@@ -15,7 +16,6 @@ object UIUtilities {
 
   val StartScene: String = "start_scene"
   val MainScene: String = "main_scene"
-  val Popup: String = "popup"
 
   def constructFXMLPath(title: String): String = {
     s"${FX_Layouts}/${title}.fxml"
@@ -50,12 +50,17 @@ object UIUtilities {
 
   val primaryStageBuilder = (s: Scene) => new PrimaryStage { scene = new scalafx.scene.Scene(s)}
   val normalStageBuilder = (s: Scene) => new Stage { setScene(s) }
+  //Unused for now, but can be used to load popups
   val dialogStageBuilder = (s: Scene) => new Stage {
+    setTitle("Load File")
     setScene(s)
     initModality(Modality.APPLICATION_MODAL)
   }
 
-
+  def loadFileDialog(window: Window): Option[File] = {
+    val fileChoose = new FileChooser()
+    Option(fileChoose.showOpenDialog(window))
+  }
 
 
 }

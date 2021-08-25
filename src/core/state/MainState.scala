@@ -1,9 +1,9 @@
 package core.state
-import gui.Utilities.{MainScene, loadAndBuild}
+import gui.UIUtilities.{MainScene, createStage, primaryStageBuilder}
 import scalafx.application.JFXApp.PrimaryStage
 
 case class MainState() extends State {
-  override val stage: PrimaryStage = loadAndBuild(MainScene)
+  override val stage: PrimaryStage = createStage(MainScene)(primaryStageBuilder)
 
   override def update(): Unit = ???
 }

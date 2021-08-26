@@ -38,7 +38,13 @@ object UIUtilities {
   }
 
 
-  // Takes a sceneTitle, and a function that builds a type of stage from that scene Title
+  /**
+   *
+   * @param sceneTitle represents the file name of a particular FXMl scene that will be loaded
+   * @param builder builds a stage of type S from the scene that is loaded via the sceneTitle
+   * @tparam S a particular type of Stage
+   * @return
+   */
   def createStage[S](sceneTitle: String)(builder: Scene => S): S = {
     loadScene(sceneTitle) match {
       case Success(scene: Scene) => builder(scene)

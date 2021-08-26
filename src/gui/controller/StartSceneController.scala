@@ -4,6 +4,7 @@ import core.App
 import core.state.{MainState, StateManager}
 import gui.UIUtilities
 import gui.UIUtilities._
+import io.{Code, IO}
 import javafx.stage.FileChooser
 import scalafxml.core.macros.sfxml
 
@@ -16,8 +17,9 @@ class StartSceneController {
   }
 
   def popupOnClick(): Unit = {
-    val test = loadFileDialog(App.getStage())
-    println(test)
+    val chosenFile = loadFileDialog(App.getStage())
+    val lines = chosenFile.flatMap(file => IO.readFile(file))
+    App.codeInput_:=(Code(chosenFile, lines))
   }
 
 

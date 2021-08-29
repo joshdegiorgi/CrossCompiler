@@ -4,13 +4,16 @@ version := "0.1"
 
 scalaVersion := "2.13.6"
 
+// compilation flags
 scalacOptions ++= Seq("-unchecked", "-deprecation", "-Xcheckinit", "-encoding", "utf8", "-Ymacro-annotations")
 
+// libraries
+val scalaFX = "org.scalafx" %% "scalafx" % "16.0.0-R22"
+val scalaFXMl = "org.scalafx" %% "scalafxml-core-sfx8" % "0.5"
+val fastParse = "com.lihaoyi" %% "fastparse" % "2.2.2"
+
 resourceDirectory in Compile := (scalaSource in Compile).value
-libraryDependencies ++= Seq(
-  "org.scalafx" %% "scalafx"             % "16.0.0-R22",
-  "org.scalafx" %% "scalafxml-core-sfx8" % "0.5"
-)
+libraryDependencies ++= Seq(scalaFX, scalaFXMl, fastParse)
 
 // Add OS specific JavaFX dependencies
 val javafxModules = Seq("base", "controls", "fxml", "graphics", "media", "swing", "web")

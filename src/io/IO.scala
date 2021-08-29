@@ -1,8 +1,8 @@
 package io
 
+import java.io.{BufferedWriter, File, FileWriter}
 import java.net.URL
 import scala.io.{BufferedSource, Source}
-import java.io.{BufferedWriter, File, FileWriter}
 import scala.util.{Failure, Success, Try}
 
 
@@ -25,25 +25,30 @@ object IO {
     verifyFileType(file).flatMap(file => Try(Source.fromFile(file)))
   }
 
-  def readFile(file: File): Option[List[String]] = {
+  def readFile(file: File): Try[List[String]] = {
     loadFile(file) match {
       case Success(source) =>
-        val lines = source.getLines().toList
-        Some(lines)
+        val raw = source.getLines().toList
+        source.close()
+        Success(raw)
       case Failure(exception) =>
         println(s"Failed to Load ${file.getName}\n${exception.toString}")
-        None
+        Failure(FileError("Failed to read file"))
     }
   }
 
-  def saveCode(code: Code): Try[Unit] = {
+
+  def saveCode(code: CodeFile): Try[Unit] = {
     if(code.file.isEmpty) Failure(IO.FileError("No File Defined!"))
-    if(code.lines.isEmpty) Failure(IO.FileError("No Lines Defined!"))
+    else if(code.raw.isEmpty) Failure(IO.FileError("No Lines Defined!"))
     else {
-      val newFile = new File(code.file.get.getName)
+      val newFile = new File(code.file.get.getAbsolutePath)
       val writer = new BufferedWriter(new FileWriter(newFile))
       Try {
-        for(line <- code.lines.get) writer.write(line)
+        for(line <- code.raw.get) {
+          writer.write(line)
+          writer.write("\n")
+        }
         writer.close()
       }
     }

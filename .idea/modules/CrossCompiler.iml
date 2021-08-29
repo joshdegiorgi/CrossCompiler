@@ -13,6 +13,9 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="sbt: com.lihaoyi:fastparse_2.13:2.2.2:jar" level="project" />
+    <orderEntry type="library" name="sbt: com.lihaoyi:geny_2.13:0.4.2:jar" level="project" />
+    <orderEntry type="library" name="sbt: com.lihaoyi:sourcecode_2.13:0.1.7:jar" level="project" />
     <orderEntry type="library" name="sbt: org.openjfx:javafx-base:16:jar" level="project" />
     <orderEntry type="library" name="sbt: org.openjfx:javafx-base:16:linux:jar" level="project" />
     <orderEntry type="library" name="sbt: org.openjfx:javafx-controls:16:jar" level="project" />

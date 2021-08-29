@@ -1,11 +1,11 @@
 package gui
 
+import core.App
 import global.ResourcePaths.FX_Layouts
-import io.IO
+import io.{CodeFile, IO}
 import javafx.scene.{Parent, Scene}
 import javafx.stage.{FileChooser, Modality, Stage, Window}
 import scalafx.application.JFXApp.PrimaryStage
-import scalafx.scene
 import scalafxml.core.{FXMLView, NoDependencyResolver}
 
 import java.io.File
@@ -14,8 +14,7 @@ import scala.util.{Failure, Success, Try}
 
 object UIUtilities {
 
-  val StartScene: String = "start_scene"
-  val MainScene: String = "main_scene"
+
 
   def constructFXMLPath(title: String): String = {
     s"${FX_Layouts}/${title}.fxml"
@@ -54,19 +53,29 @@ object UIUtilities {
     }
   }
 
-  val primaryStageBuilder = (s: Scene) => new PrimaryStage { scene = new scalafx.scene.Scene(s)}
-  val normalStageBuilder = (s: Scene) => new Stage { setScene(s) }
+  val primaryStageBuilder: Scene => PrimaryStage = (s: Scene) => new PrimaryStage { scene = new scalafx.scene.Scene(s)}
+  val normalStageBuilder: Scene => Stage = (s: Scene) => new Stage { setScene(s) }
   //Unused for now, but can be used to load popups
-  val dialogStageBuilder = (s: Scene) => new Stage {
+  val dialogStageBuilder: Scene => Stage = (s: Scene) => new Stage {
     setTitle("Load File")
     setScene(s)
     initModality(Modality.APPLICATION_MODAL)
   }
 
-  def loadFileDialog(window: Window): Option[File] = {
+  // requires the current stage/window so that it can maintain correct parent/child ownership
+  def loadFileChooser(window: Window = App.getStage()): Option[File] = {
     val fileChoose = new FileChooser()
     Option(fileChoose.showOpenDialog(window))
   }
 
+  def handleFileDialog(): Option[CodeFile] = {
+    loadFileChooser() match {
+      case Some(file) => IO.readFile(file) match {
+        case Success(raw) => Some(CodeFile(Some(file), Some(raw)))
+        case Failure(_) => None
+      }
+      case None => None
+    }
+  }
 
 }

@@ -15,6 +15,8 @@ case class CodeFile(file: Option[File], raw: Option[List[String]]) {
   }
 }
 object CodeFile {
+
+  //constructs a new CodeFile from a contiguous string rather than from a list of strings (line separated)
   def withString(file: Option[File], asString: Option[String]): CodeFile = {
     val lines = asString.map(string => string.split("\n").toList)
     CodeFile(file, lines)

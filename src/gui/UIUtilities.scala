@@ -26,7 +26,7 @@ object UIUtilities {
     IO.loadResource(pathToResource)
   }
 
-  // Given a title of a FXML, will attempt to load the corresponding Scene from disk
+  // Given a title of an FXML, will attempt to load the corresponding Scene from disk
   def loadScene(title: String): Try[Scene] = {
     loadParent(title).flatMap(parent => Try(new Scene(parent)))
   }
@@ -63,19 +63,26 @@ object UIUtilities {
   }
 
   // requires the current stage/window so that it can maintain correct parent/child ownership
-  def loadFileChooser(window: Window = App.getStage()): Option[File] = {
+  def openFileChooser(window: Window = App.getStage()): Option[File] = {
     val fileChoose = new FileChooser()
     Option(fileChoose.showOpenDialog(window))
   }
 
-  def handleFileDialog(): Option[CodeFile] = {
-    loadFileChooser() match {
-      case Some(file) => IO.readFile(file) match {
-        case Success(raw) => Some(CodeFile(Some(file), Some(raw)))
-        case Failure(_) => None
-      }
-      case None => None
+  def saveFileChooser(window: Window = App.getStage()): Option[File] = {
+    val fileChooser = new FileChooser()
+    Option(fileChooser.showSaveDialog(window))
+  }
+
+  /** guarantees a "full" codeFile or else nothing */
+  def openOperation(file: File): Option[CodeFile] = {
+    IO.readFile(file) match {
+      case Success(raw) => Some(CodeFile(Some(file), Some(raw)))
+      case Failure(_) => None
     }
   }
+
+
+
+
 
 }

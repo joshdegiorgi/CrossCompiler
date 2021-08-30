@@ -21,12 +21,12 @@ object IO {
     else Failure(FileError("Wrong File Extension"))
   }
 
-  private def loadFile(file: File): Try[BufferedSource] = {
+  private def loadSource(file: File): Try[BufferedSource] = {
     verifyFileType(file).flatMap(file => Try(Source.fromFile(file)))
   }
 
   def readFile(file: File): Try[List[String]] = {
-    loadFile(file) match {
+    loadSource(file) match {
       case Success(source) =>
         val raw = source.getLines().toList
         source.close()
@@ -37,22 +37,17 @@ object IO {
     }
   }
 
-
-  def saveCode(code: CodeFile): Try[Unit] = {
+  def saveCodeToFile(code: CodeFile): Try[Unit] = {
     if(code.file.isEmpty) Failure(IO.FileError("No File Defined!"))
     else if(code.raw.isEmpty) Failure(IO.FileError("No Lines Defined!"))
     else {
       val newFile = new File(code.file.get.getAbsolutePath)
       val writer = new BufferedWriter(new FileWriter(newFile))
       Try {
-        for(line <- code.raw.get) {
-          writer.write(line)
-          writer.write("\n")
-        }
+        code.raw.get.foreach(line => writer.write(line + "\n"))
         writer.close()
       }
     }
-
   }
 
 }

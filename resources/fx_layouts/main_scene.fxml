@@ -3,6 +3,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -16,8 +17,10 @@
               <menus>
                 <Menu mnemonicParsing="false" text="File">
                   <items>
-                        <MenuItem mnemonicParsing="false" onAction="#saveOnClick" text="Save" />
-                        <MenuItem mnemonicParsing="false" onAction="#loadOnClick" text="Load" />
+                        <MenuItem fx:id="saveMenuItem" mnemonicParsing="false" onAction="#saveOnClick" text="Save" />
+                        <MenuItem mnemonicParsing="false" text="Save As" onAction="#saveAsOnClick"/>
+                        <MenuItem mnemonicParsing="false" onAction="#openOnClick" text="Open" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
                         <MenuItem mnemonicParsing="false" onAction="#backOnClick" text="Back to Menu" />
                         <MenuItem mnemonicParsing="false" onAction="#closeOnClick" text="Close" />
                   </items>

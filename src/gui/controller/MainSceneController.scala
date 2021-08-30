@@ -71,7 +71,6 @@ class MainSceneController(JavaTextArea: TextArea, PythonTextArea: TextArea, save
 
   private def setSaveMenuItemStatus(): Unit = {
     val shouldEnable = StateManager.getJavaCode().file.isEmpty
-    println(shouldEnable)
     saveMenuItem.setDisable(shouldEnable)
   }
 

@@ -73,7 +73,7 @@ object UIUtilities {
     Option(fileChooser.showSaveDialog(window))
   }
 
-  /** guarantees a "full" codeFile or else nothing */
+  /** guarantees a "full" codeFile from the chosen file or else nothing */
   def openOperation(file: File): Option[CodeFile] = {
     IO.readFile(file) match {
       case Success(raw) => Some(CodeFile(Some(file), Some(raw)))

@@ -22,7 +22,7 @@
                         <MenuItem mnemonicParsing="false" onAction="#openOnClick" text="Open" />
                         <SeparatorMenuItem mnemonicParsing="false" />
                         <MenuItem mnemonicParsing="false" onAction="#backOnClick" text="Back to Menu" />
-                        <MenuItem mnemonicParsing="false" onAction="#closeOnClick" text="Close" />
+                        <MenuItem mnemonicParsing="false" onAction="#closeOnClick" text="Quit" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Edit">

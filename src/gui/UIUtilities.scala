@@ -2,7 +2,9 @@ package gui
 
 import core.App
 import global.ResourcePaths.FX_Layouts
+import io.IO.FileError
 import io.{CodeFile, IO}
+import javafx.scene.control.{ButtonType, Dialog}
 import javafx.scene.{Parent, Scene}
 import javafx.stage.{FileChooser, Modality, Stage, Window}
 import scalafx.application.JFXApp.PrimaryStage
@@ -73,13 +75,25 @@ object UIUtilities {
     Option(fileChooser.showSaveDialog(window))
   }
 
-  /** guarantees a "full" codeFile from the chosen file or else nothing */
+  /** will attempt to write a file from storage, then if successful, will return a codeFile representation
+   * guarantees a "full" codeFile from the chosen file or else nothing */
   def openOperation(file: File): Option[CodeFile] = {
     IO.readFile(file) match {
       case Success(raw) => Some(CodeFile(Some(file), Some(raw)))
-      case Failure(_) => None
+      case Failure(error: FileError) =>
+        showDialog(error.msg)
+        None
+      case _ => None
     }
   }
+
+  def showDialog(msg: String): Unit = {
+    val dialog = new Dialog();
+    dialog.getDialogPane.setContentText(msg)
+    dialog.getDialogPane.getButtonTypes.add(ButtonType.OK)
+    dialog.showAndWait()
+  }
+
 
 
 

@@ -8,6 +8,10 @@ object App extends JFXApp {
 
   StateManager.transition(StartState())
 
+  def appendPythonCode(str: String): Unit = {
+
+  }
+
   def setStage(stage: PrimaryStage): Unit = {
     this.stage = stage
     stage.resizable = false

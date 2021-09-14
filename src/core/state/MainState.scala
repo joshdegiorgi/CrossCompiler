@@ -2,7 +2,11 @@ package core.state
 import global.ResourcePaths.MainScene
 import gui.UIUtilities._
 import io.CodeFile
+import org.antlr.v4.runtime.{CharStreams, CommonTokenStream}
+import parse.Java8Lexer
 import scalafx.application.JFXApp.PrimaryStage
+
+import java.io.ByteArrayInputStream
 
 case class MainState(rawInput: CodeFile = CodeFile(None, None),
                      rawOutput: CodeFile = CodeFile(None, None)) extends State {
@@ -10,5 +14,9 @@ case class MainState(rawInput: CodeFile = CodeFile(None, None),
   def setRawInput(input: CodeFile): MainState = this.copy(rawInput = input)
   def setRawOutput(output: CodeFile): MainState = this.copy(rawOutput = output)
   override val stage: PrimaryStage = createStage(MainScene)(primaryStageBuilder)
+
+  // Parse stuff
+
+  val lexer = new
 
 }

@@ -165,7 +165,7 @@ typeBound
 
 additionalBound
 	:	'&' interfaceType
-	;
+	;primitive
 
 typeArguments
 	:	'<' typeArgumentList '>'
@@ -710,6 +710,7 @@ variableInitializerList
 /*
  * Productions from §14 (Blocks and Statements)
  */
+
 
 block
 	:	'{' blockStatements? '}'

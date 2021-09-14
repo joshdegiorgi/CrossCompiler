@@ -1,16 +1,15 @@
 package parse;
 
+import core.state.StateManager;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import parse.antlr.Java8Parser;
+import parse.antlr.Java8ParserListener;
 
 public class ParserListener implements Java8ParserListener {
 
-    // SINCE THESE ARE ALL VOID METHODS, IT IS OKAY TO LEAVE THINGS BLANK
-    // ASSUMING WE HAVE NO APPROPRIATE IMPLEMENTATION YET
-
-    Java8Parser parser;
+    private Java8Parser parser;
 
     public ParserListener(Java8Parser parser) {
         this.parser = parser;
@@ -48,12 +47,12 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void enterIntegralType(Java8Parser.IntegralTypeContext ctx) {
-        return; // Python has no typing
+
     }
 
     @Override
     public void exitIntegralType(Java8Parser.IntegralTypeContext ctx) {
-        return; // Python has no typing
+
     }
 
     @Override
@@ -418,7 +417,6 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void enterClassDeclaration(Java8Parser.ClassDeclarationContext ctx) {
-
     }
 
     @Override
@@ -428,7 +426,8 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void enterNormalClassDeclaration(Java8Parser.NormalClassDeclarationContext ctx) {
-
+        String out = "class " + ctx.Identifier() + ":";
+        System.out.println(out);
     }
 
     @Override
@@ -498,12 +497,12 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void enterClassBody(Java8Parser.ClassBodyContext ctx) {
-
+        System.out.println("CLASS TAB ->");
     }
 
     @Override
     public void exitClassBody(Java8Parser.ClassBodyContext ctx) {
-
+        System.out.println("CLASS TAB <-");
     }
 
     @Override
@@ -708,7 +707,8 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void enterMethodDeclaration(Java8Parser.MethodDeclarationContext ctx) {
-
+        String out = "def " + ctx.methodHeader().methodDeclarator().Identifier() + "():";
+        System.out.println(out);
     }
 
     @Override
@@ -2126,8 +2126,6 @@ public class ParserListener implements Java8ParserListener {
 
     }
 
-    // TODO: Start here!
-    // assignment: leftHandSide assignmentOperator rightHandSide
     @Override
     public void enterAssignmentExpression(Java8Parser.AssignmentExpressionContext ctx) {
 
@@ -2140,11 +2138,7 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void enterAssignment(Java8Parser.AssignmentContext ctx) {
-        TokenStream tokens = parser.getTokenStream();
-        String leftHandSide = tokens.getText(ctx.leftHandSide());
-        String assignmentOperator = tokens.getText(ctx.assignmentOperator());
-        String expression = tokens.getText(ctx.expression());
-        System.out.println(leftHandSide + assignmentOperator + expression);
+
     }
 
     @Override
@@ -2272,7 +2266,7 @@ public class ParserListener implements Java8ParserListener {
 
     }
 
-    @Override
+        @Override
     public void enterMultiplicativeExpression(Java8Parser.MultiplicativeExpressionContext ctx) {
 
     }

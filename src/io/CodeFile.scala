@@ -13,6 +13,13 @@ case class CodeFile(file: Option[File], raw: Option[List[String]]) {
       case None => ""
     }
   }
+
+  def appendString(str: String): CodeFile = {
+    val asString = this.asString()
+    val appended = asString.concat(str)
+    val lines = appended.split("\n").toList
+    this.copy(raw = Option(lines))
+  }
 }
 object CodeFile {
 

@@ -2,6 +2,7 @@ package core.state
 
 import core.App
 import io.CodeFile
+import parse.TranslationUnit
 
 object StateManager {
 
@@ -14,6 +15,7 @@ object StateManager {
     App.setStage(state.stage)
   }
 
+  // TODO: Refactor the matching logic
   def setJavaCode(code: CodeFile): Unit = {
     currentState match {
       case s: MainState =>
@@ -43,6 +45,24 @@ object StateManager {
     currentState match {
       case s: MainState => s.rawOutput
       case _ => CodeFile(None, None)
+    }
+  }
+
+  def translate(input: String): Unit = {
+    currentState match {
+      case s: MainState =>
+        TranslationUnit.walk(input)
+      case _ => ()
+    }
+  }
+
+  def appendPython(str: String): Unit = {
+    currentState match {
+      case s: MainState =>
+        val updatedCode = s.rawOutput.appendString(str)
+        val s2 = s.copy(rawOutput = updatedCode)
+        transition(s2)
+      case _ => ()
     }
   }
 }

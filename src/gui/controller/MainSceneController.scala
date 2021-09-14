@@ -15,6 +15,7 @@ class MainSceneController(JavaTextArea: TextArea, PythonTextArea: TextArea, save
 
   //Is called each time any button is clicked
   def initialize(): Unit = {
+    PythonTextArea.setEditable(false)
     JavaTextArea.setStyle("-fx-font-family: monospace")
     setFormattedText(JavaTextArea, StateManager.getJavaCode())
     setSaveMenuItemStatus()
@@ -80,6 +81,10 @@ class MainSceneController(JavaTextArea: TextArea, PythonTextArea: TextArea, save
       case Some(file) => App.getStage().setTitle(file.getName)
       case None => ()
     }
+  }
+
+  def translateOnClick(): Unit = {
+    StateManager.translate(JavaTextArea.getText)
   }
 
   private def forceBinding(): Unit = {

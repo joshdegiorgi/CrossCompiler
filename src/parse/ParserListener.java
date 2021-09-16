@@ -2,6 +2,7 @@ package parse;
 
 import core.state.StateManager;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import parse.antlr.Java8Parser;
@@ -295,9 +296,10 @@ public class ParserListener implements Java8ParserListener {
 
     }
 
-    @Override
+    @Override   // have not included ambig. defn.
     public void enterExpressionName(Java8Parser.ExpressionNameContext ctx) {
-
+        String out = ctx.Identifier().getText();
+        TranslationUnit.outputNoTab(out);
     }
 
     @Override
@@ -426,8 +428,8 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void enterNormalClassDeclaration(Java8Parser.NormalClassDeclarationContext ctx) {
-        String out = "class " + ctx.Identifier() + ":";
-        System.out.println(out);
+        String out = "class" + " " + ctx.Identifier() + ": \n";
+        TranslationUnit.outputWithTab(out);
     }
 
     @Override
@@ -497,12 +499,14 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void enterClassBody(Java8Parser.ClassBodyContext ctx) {
-        System.out.println("CLASS TAB ->");
+        // causes scope increase
+        TranslationUnit.enterScope();
     }
 
     @Override
     public void exitClassBody(Java8Parser.ClassBodyContext ctx) {
-        System.out.println("CLASS TAB <-");
+        // causes scope decrease
+        TranslationUnit.exitScope();
     }
 
     @Override
@@ -517,7 +521,6 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void enterClassMemberDeclaration(Java8Parser.ClassMemberDeclarationContext ctx) {
-
     }
 
     @Override
@@ -557,12 +560,14 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void enterVariableDeclarator(Java8Parser.VariableDeclaratorContext ctx) {
-
+        String optionalInitializer = ctx.variableInitializer() == null ? "None" : ctx.variableInitializer().getText();
+        String out = ctx.variableDeclaratorId().Identifier() + " " + "=" + " " + optionalInitializer; // expression
+        TranslationUnit.outputWithTab(out);
     }
 
     @Override
     public void exitVariableDeclarator(Java8Parser.VariableDeclaratorContext ctx) {
-
+        TranslationUnit.outputNoTab("\n");
     }
 
     @Override
@@ -577,7 +582,6 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void enterVariableInitializer(Java8Parser.VariableInitializerContext ctx) {
-
     }
 
     @Override
@@ -707,13 +711,17 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void enterMethodDeclaration(Java8Parser.MethodDeclarationContext ctx) {
-        String out = "def " + ctx.methodHeader().methodDeclarator().Identifier() + "():";
-        System.out.println(out);
+        String out = "def ";
+        TranslationUnit.outputWithTab(out);
     }
+
+    // methodDeclartion
+    //
 
     @Override
     public void exitMethodDeclaration(Java8Parser.MethodDeclarationContext ctx) {
-
+        String out = "\n";
+        TranslationUnit.outputNoTab(out);
     }
 
     @Override
@@ -733,7 +741,8 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void exitMethodHeader(Java8Parser.MethodHeaderContext ctx) {
-
+        String out = ": \n";
+        TranslationUnit.outputNoTab(out);
     }
 
     @Override
@@ -748,7 +757,8 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void enterMethodDeclarator(Java8Parser.MethodDeclaratorContext ctx) {
-
+        String out = ctx.Identifier().getText();
+        TranslationUnit.outputNoTab(out);
     }
 
     @Override
@@ -1268,12 +1278,14 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void enterBlock(Java8Parser.BlockContext ctx) {
-
+        // causes scope increase
+        TranslationUnit.enterScope();
     }
 
     @Override
     public void exitBlock(Java8Parser.BlockContext ctx) {
-
+        // causes scope decrease
+        TranslationUnit.exitScope();
     }
 
     @Override
@@ -1398,7 +1410,8 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void enterIfThenStatement(Java8Parser.IfThenStatementContext ctx) {
-
+        String out = "if ";
+        TranslationUnit.outputWithTab(out);
     }
 
     @Override
@@ -2138,6 +2151,10 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void enterAssignment(Java8Parser.AssignmentContext ctx) {
+        String leftHandSide = ctx.leftHandSide().expressionName().Identifier().getText();
+        String assignOperator = ctx.assignmentOperator().getText();
+        String out = leftHandSide + " " + assignOperator + " ";
+        TranslationUnit.outputWithTab(out);
 
     }
 
@@ -2148,7 +2165,6 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void enterLeftHandSide(Java8Parser.LeftHandSideContext ctx) {
-
     }
 
     @Override

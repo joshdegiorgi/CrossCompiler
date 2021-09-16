@@ -32,10 +32,13 @@ object TranslationUnit {
     walker.walk(listener, tree)
   }
 
+  // broke
   def enterScope(): Unit = currentScope += 1
   def exitScope(): Unit = currentScope -= 1
   def tabs(): String = List.fill(currentScope)("\t").mkString
-
+  def prepended(str: String): String = tabs() + str
+  def outputNoTab(str: String) = print(str)
+  def outputWithTab(str: String): Unit = print(prepended(str))
 }
 
 

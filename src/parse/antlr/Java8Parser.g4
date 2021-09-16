@@ -210,7 +210,7 @@ packageOrTypeName
 
 expressionName
 	:	Identifier
-	|	ambiguousName '.' Identifier
+	|	ambiguousName '.' Identifier    //idk???
 	;
 
 methodName
@@ -272,15 +272,15 @@ typeDeclaration
  */
 
 classDeclaration
-	:	normalClassDeclaration
-	|	enumDeclaration
+	:	normalClassDeclaration  // cover this
+	|	enumDeclaration         // ignore for now
 	;
 
-normalClassDeclaration
+normalClassDeclaration          // focus on this ignoring types and inheritance for now
 	:	classModifier* 'class' Identifier typeParameters? superclass? superinterfaces? classBody
 	;
 
-classModifier
+classModifier                   // completely ignore
 	:	annotation
 	|	'public'
 	|	'protected'
@@ -334,7 +334,7 @@ fieldDeclaration
 	:	fieldModifier* unannType variableDeclaratorList ';'
 	;
 
-fieldModifier
+fieldModifier   // start here
 	:	annotation
 	|	'public'
 	|	'protected'
@@ -349,7 +349,7 @@ variableDeclaratorList
 	:	variableDeclarator (',' variableDeclarator)*
 	;
 
-variableDeclarator
+variableDeclarator  // focus => x = 5;
 	:	variableDeclaratorId ('=' variableInitializer)?
 	;
 
@@ -422,6 +422,10 @@ unannArrayType
 	|	unannTypeVariable dims
 	;
 
+// header() { body }
+// def header(): body
+// def methodDeclarator(): body
+// def Iden. ( param.* ): body
 methodDeclaration
 	:	methodModifier* methodHeader methodBody
 	;
@@ -441,7 +445,7 @@ methodModifier
 
 methodHeader
 	:	result methodDeclarator throws_?
-	|	typeParameters annotation* result methodDeclarator throws_?
+	|	typeParameters annotation* result methodDeclarator throws_? // this option can be reduced to the first option, we will not be including type params.
 	;
 
 result
@@ -1168,8 +1172,8 @@ constantExpression
 	:	expression
 	;
 
-expression
-	:	lambdaExpression
+expression  // definition
+	:	lambdaExpression    //ignore
 	|	assignmentExpression
 	;
 
@@ -1193,23 +1197,31 @@ lambdaBody
 	;
 
 assignmentExpression
-	:	conditionalExpression
+	:	conditionalExpression   // "boolean expression"
 	|	assignment
 	;
 
 assignment
 	:	leftHandSide assignmentOperator expression
 	;
-
+/* expression -> number or identifier (5)
+    assignment
+            lhs ass.op. exp.
+            x = exp.
+*/
+// int x = 5
+// bool x = true && false
+// x == 5
 leftHandSide
-	:	expressionName
-	|	fieldAccess
-	|	arrayAccess
+	:	expressionName // important
+	|	fieldAccess // ignore completely
+	|	arrayAccess // ignore for now
 	;
 
 assignmentOperator
 	:	'='
 	|	'*='
+	|	'/='
 	|	'/='
 	|	'%='
 	|	'+='
@@ -1224,7 +1236,7 @@ assignmentOperator
 
 conditionalExpression
 	:	conditionalOrExpression
-	|	conditionalOrExpression '?' expression ':' conditionalExpression
+	|	conditionalOrExpression '?' expression ':' conditionalExpression    //ternary ignore for now
 	;
 
 conditionalOrExpression
@@ -1312,7 +1324,7 @@ unaryExpressionNotPlusMinus
 
 postfixExpression
 	:	(	primary
-		|	expressionName
+		|	expressionName  // !!! bottom of expression ::: expression =...> expressionName
 		)
 		(	postIncrementExpression_lf_postfixExpression
 		|	postDecrementExpression_lf_postfixExpression

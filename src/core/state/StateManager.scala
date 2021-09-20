@@ -52,17 +52,14 @@ object StateManager {
     currentState match {
       case s: MainState =>
         TranslationUnit.walk(input)
-      case _ => ()
-    }
-  }
-
-  def appendPython(str: String): Unit = {
-    currentState match {
-      case s: MainState =>
-        val updatedCode = s.rawOutput.appendString(str)
-        val s2 = s.copy(rawOutput = updatedCode)
+        val output = TranslationUnit.print()
+        val rawInput =  s.rawInput.setRaw(input)
+        val rawOutput = s.rawOutput.setRaw(output)
+        val s2 = MainState(rawInput, rawOutput)
         transition(s2)
       case _ => ()
     }
   }
+
+
 }

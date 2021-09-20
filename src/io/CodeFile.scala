@@ -14,10 +14,8 @@ case class CodeFile(file: Option[File], raw: Option[List[String]]) {
     }
   }
 
-  def appendString(str: String): CodeFile = {
-    val asString = this.asString()
-    val appended = asString.concat(str)
-    val lines = appended.split("\n").toList
+  def setRaw(str: String): CodeFile = {
+    val lines = str.split("\n").toList
     this.copy(raw = Option(lines))
   }
 }

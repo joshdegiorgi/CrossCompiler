@@ -5,6 +5,7 @@ import core.state.{StartState, StateManager}
 import gui.UIUtilities.{openFileChooser, openOperation, saveFileChooser}
 import io.{CodeFile, IO}
 import javafx.application.Platform
+import javafx.beans.value.ObservableValue
 import javafx.scene.control.{MenuItem, TextArea}
 import scalafxml.core.macros.sfxml
 
@@ -17,7 +18,9 @@ class MainSceneController(JavaTextArea: TextArea, PythonTextArea: TextArea, save
   def initialize(): Unit = {
     PythonTextArea.setEditable(false)
     JavaTextArea.setStyle("-fx-font-family: monospace")
+    PythonTextArea.setStyle("-fx-font-family: monospace")
     setFormattedText(JavaTextArea, StateManager.getJavaCode())
+    setFormattedText(PythonTextArea, StateManager.getPythonCode())
     setSaveMenuItemStatus()
     setTitle()
   }
@@ -60,6 +63,7 @@ class MainSceneController(JavaTextArea: TextArea, PythonTextArea: TextArea, save
     System.exit(0)
   }
 
+  // used to on initialization to set the text of the textareas as formatted based on the static representation in state
   def setFormattedText(textArea: TextArea, code: CodeFile): Unit = {
     code.raw match {
       case Some(list) =>
@@ -85,12 +89,16 @@ class MainSceneController(JavaTextArea: TextArea, PythonTextArea: TextArea, save
 
   def translateOnClick(): Unit = {
     StateManager.translate(JavaTextArea.getText)
+    setFormattedText(JavaTextArea, StateManager.getJavaCode())
+    setFormattedText(PythonTextArea, StateManager.getPythonCode())
+    forceBinding()
   }
 
   private def forceBinding(): Unit = {
     JavaTextArea.setText(JavaTextArea.getText)
     PythonTextArea.setText(PythonTextArea.getText)
     StateManager.setJavaCode(StateManager.getJavaCode())
+    StateManager.setPythonCode(StateManager.getPythonCode())
   }
 
 

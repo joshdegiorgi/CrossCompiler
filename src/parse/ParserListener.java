@@ -721,6 +721,9 @@ public class ParserListener implements Java8ParserListener {
     @Override
     public void exitMethodDeclaration(Java8Parser.MethodDeclarationContext ctx) {
         String out = "\n";
+        if(ctx.methodHeader().methodDeclarator().Identifier().getText().equals("main")) {
+            out += "\tmain()";
+        }
         TranslationUnit.outputNoTab(out);
     }
 
@@ -768,17 +771,23 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void enterFormalParameterList(Java8Parser.FormalParameterListContext ctx) {
-
+        String out = "(self";
+        TranslationUnit.outputNoTab(out);
     }
 
     @Override
     public void exitFormalParameterList(Java8Parser.FormalParameterListContext ctx) {
-
+        String out = ")";
+        TranslationUnit.outputNoTab(out);
     }
 
     @Override
     public void enterFormalParameters(Java8Parser.FormalParametersContext ctx) {
-
+        String out = ", ";
+        for(int i = 0; i < ctx.formalParameter().size(); i++) {
+            out += ctx.formalParameter(i).variableDeclaratorId().Identifier().getText() + ", ";
+        }
+        TranslationUnit.outputNoTab(out);
     }
 
     @Override
@@ -808,7 +817,8 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void enterLastFormalParameter(Java8Parser.LastFormalParameterContext ctx) {
-
+        String out = ctx.formalParameter().variableDeclaratorId().Identifier().getText();
+        TranslationUnit.outputNoTab(out);
     }
 
     @Override
@@ -1410,13 +1420,13 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void enterIfThenStatement(Java8Parser.IfThenStatementContext ctx) {
-        String out = "if ";
+        String out = "if(" + "):";
         TranslationUnit.outputWithTab(out);
     }
 
     @Override
     public void exitIfThenStatement(Java8Parser.IfThenStatementContext ctx) {
-
+        String out = "\n";
     }
 
     @Override

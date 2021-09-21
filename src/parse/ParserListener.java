@@ -18,7 +18,8 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void enterLiteral(Java8Parser.LiteralContext ctx) {
-
+        String out = ctx.getText();
+        TranslationUnit.outputNoTab(out);
     }
 
     @Override
@@ -298,7 +299,7 @@ public class ParserListener implements Java8ParserListener {
 
     @Override   // have not included ambig. defn.
     public void enterExpressionName(Java8Parser.ExpressionNameContext ctx) {
-        String out = ctx.Identifier().getText();
+        String out = ctx.Identifier().getText() + " ";
         TranslationUnit.outputNoTab(out);
     }
 
@@ -760,25 +761,22 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void enterMethodDeclarator(Java8Parser.MethodDeclaratorContext ctx) {
-        String out = ctx.Identifier().getText();
+        String out = ctx.Identifier().getText() + "(self";
         TranslationUnit.outputNoTab(out);
     }
 
     @Override
     public void exitMethodDeclarator(Java8Parser.MethodDeclaratorContext ctx) {
-
+        String out = ")";
+        TranslationUnit.outputNoTab(out);
     }
 
     @Override
     public void enterFormalParameterList(Java8Parser.FormalParameterListContext ctx) {
-        String out = "(self";
-        TranslationUnit.outputNoTab(out);
     }
 
     @Override
     public void exitFormalParameterList(Java8Parser.FormalParameterListContext ctx) {
-        String out = ")";
-        TranslationUnit.outputNoTab(out);
     }
 
     @Override
@@ -2151,21 +2149,20 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void enterAssignmentExpression(Java8Parser.AssignmentExpressionContext ctx) {
-
+        // Doesn't need anything for now since arrays are not yet implemented, go lower
     }
 
     @Override
     public void exitAssignmentExpression(Java8Parser.AssignmentExpressionContext ctx) {
-
+        TranslationUnit.outputNoTab("\n");
     }
 
     @Override
     public void enterAssignment(Java8Parser.AssignmentContext ctx) {
-        String leftHandSide = ctx.leftHandSide().expressionName().Identifier().getText();
-        String assignOperator = ctx.assignmentOperator().getText();
-        String out = leftHandSide + " " + assignOperator + " ";
-        TranslationUnit.outputWithTab(out);
-
+//        String leftHandSide = ctx.leftHandSide().expressionName().Identifier().getText();
+//        String assignOperator = ctx.assignmentOperator().getText();
+//        String out = leftHandSide + " " + assignOperator + " ";
+        TranslationUnit.outputWithTab("");
     }
 
     @Override
@@ -2184,7 +2181,8 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void enterAssignmentOperator(Java8Parser.AssignmentOperatorContext ctx) {
-
+        String out = ctx.getText() + " ";
+        TranslationUnit.outputNoTab(out);
     }
 
     @Override
@@ -2284,7 +2282,6 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void enterAdditiveExpression(Java8Parser.AdditiveExpressionContext ctx) {
-
     }
 
     @Override

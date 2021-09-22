@@ -19,6 +19,8 @@ public class ParserListener implements Java8ParserListener {
     @Override
     public void enterLiteral(Java8Parser.LiteralContext ctx) {
         String out = ctx.getText();
+        if(out.equals("true")) {out = "True";}
+        else if(out.equals("false")) {out = "False";}
         TranslationUnit.outputNoTab(out);
     }
 
@@ -561,7 +563,7 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void enterVariableDeclarator(Java8Parser.VariableDeclaratorContext ctx) {
-        String optionalInitializer = ctx.variableInitializer() == null ? "None" : ctx.variableInitializer().getText();
+        String optionalInitializer = ctx.variableInitializer() == null ? "None" : "";//ctx.variableInitializer().getText();
         String out = ctx.variableDeclaratorId().Identifier() + " " + "=" + " " + optionalInitializer; // expression
         TranslationUnit.outputWithTab(out);
     }
@@ -723,7 +725,7 @@ public class ParserListener implements Java8ParserListener {
     public void exitMethodDeclaration(Java8Parser.MethodDeclarationContext ctx) {
         String out = "\n";
         if(ctx.methodHeader().methodDeclarator().Identifier().getText().equals("main")) {
-            out += "\tmain()";
+            out += "\tmain()\n";
         }
         TranslationUnit.outputNoTab(out);
     }
@@ -2202,12 +2204,12 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void enterConditionalOrExpression(Java8Parser.ConditionalOrExpressionContext ctx) {
-
+        //if(ctx.parent instanceof Java8Parser.ConditionalExpressionContext && ctx.OR() != null){TranslationUnit.outputNoTab(" or ");}
     }
 
     @Override
     public void exitConditionalOrExpression(Java8Parser.ConditionalOrExpressionContext ctx) {
-
+        if(ctx.parent instanceof Java8Parser.ConditionalOrExpressionContext) TranslationUnit.outputNoTab(" or ");
     }
 
     @Override
@@ -2217,7 +2219,7 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void exitConditionalAndExpression(Java8Parser.ConditionalAndExpressionContext ctx) {
-
+        if(ctx.parent instanceof Java8Parser.ConditionalAndExpressionContext) TranslationUnit.outputNoTab(" and ");
     }
 
     @Override
@@ -2331,7 +2333,10 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void enterUnaryExpressionNotPlusMinus(Java8Parser.UnaryExpressionNotPlusMinusContext ctx) {
-
+        if(ctx.unaryExpression() != null) {
+            String out = "not ";
+            TranslationUnit.outputNoTab(out);
+        }
     }
 
     @Override

@@ -1,8 +1,6 @@
 package parse;
 
-import core.state.StateManager;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import parse.antlr.Java8Parser;
@@ -1420,13 +1418,14 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void enterIfThenStatement(Java8Parser.IfThenStatementContext ctx) {
-        String out = "if(" + "):";
+        String out = "if(";
         TranslationUnit.outputWithTab(out);
     }
 
     @Override
     public void exitIfThenStatement(Java8Parser.IfThenStatementContext ctx) {
         String out = "\n";
+        TranslationUnit.outputWithTab(out);
     }
 
     @Override
@@ -2106,7 +2105,9 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void exitExpression(Java8Parser.ExpressionContext ctx) {
-
+        if(ctx.parent instanceof Java8Parser.IfThenStatementContext || ctx.parent instanceof Java8Parser.IfThenElseStatementContext || ctx.parent instanceof Java8Parser.IfThenElseStatementNoShortIfContext){
+            TranslationUnit.outputNoTab("):\n");
+        }
     }
 
     @Override
@@ -2156,7 +2157,7 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void exitAssignmentExpression(Java8Parser.AssignmentExpressionContext ctx) {
-        TranslationUnit.outputNoTab("\n");
+        //TranslationUnit.outputNoTab("\n");
     }
 
     @Override
@@ -2303,7 +2304,15 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void enterUnaryExpression(Java8Parser.UnaryExpressionContext ctx) {
-
+        String out;
+        if(ctx.unaryExpression() != null) {
+            if(ctx.getChild(0).getText().equals("-")){
+                out = "-";
+            }else {
+                out = "+";
+            }
+            TranslationUnit.outputNoTab(out);
+        }
     }
 
     @Override

@@ -15,6 +15,16 @@ public class ParserListener implements Java8ParserListener {
     }
 
     @Override
+    public void enterComment(Java8Parser.CommentContext ctx) { //TQ
+        TranslationUnit.outputNoTab("####");
+    }
+
+    @Override
+    public void exitComment(Java8Parser.CommentContext ctx) { //TQ
+
+    }
+
+    @Override
     public void enterLiteral(Java8Parser.LiteralContext ctx) {
         String out = ctx.getText();
         if(out.equals("true")) {out = "True";}

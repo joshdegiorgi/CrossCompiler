@@ -1363,7 +1363,10 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void exitStatementNoShortIf(Java8Parser.StatementNoShortIfContext ctx) {
-
+        if(ctx.parent instanceof Java8Parser.IfThenElseStatementContext || ctx.parent instanceof Java8Parser.IfThenElseStatementNoShortIfContext) {
+            String out = "else:\n";
+            TranslationUnit.outputWithTab(out);
+        }
     }
 
     @Override
@@ -1440,7 +1443,8 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void enterIfThenElseStatement(Java8Parser.IfThenElseStatementContext ctx) {
-
+        String out = "if(";
+        TranslationUnit.outputWithTab(out);
     }
 
     @Override
@@ -1450,7 +1454,8 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void enterIfThenElseStatementNoShortIf(Java8Parser.IfThenElseStatementNoShortIfContext ctx) {
-
+        String out = "if(";
+        TranslationUnit.outputWithTab(out);
     }
 
     @Override

@@ -306,7 +306,6 @@ public class Java8Parser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 				setState(470);
-				System.out.println("Comment State set");
 				_la = _input.LA(1);
 				if ( !(_la==LINE_COMMENT || _la==COMMENT) ) {
 					_errHandler.recoverInline(this);
@@ -355,7 +354,6 @@ public class Java8Parser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(472);
-			System.out.println("Literal State set");
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral))) != 0)) ) {
 			_errHandler.recoverInline(this);
@@ -556,7 +554,6 @@ public class Java8Parser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(494);
-			System.out.println("Int state set");
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BYTE) | (1L << CHAR) | (1L << INT) | (1L << LONG) | (1L << SHORT))) != 0)) ) {
 			_errHandler.recoverInline(this);

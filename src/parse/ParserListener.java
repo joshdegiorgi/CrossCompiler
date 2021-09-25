@@ -1,12 +1,9 @@
 package parse;
 
-import core.state.StateManager;
-
-import java.lang.annotation.Annotation;
 
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.tree.ErrorNode;
+import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import parse.antlr.Java8Parser;
 import parse.antlr.Java8ParserListener;
@@ -20,6 +17,16 @@ public class ParserListener implements Java8ParserListener {
 
     public ParserListener(Java8Parser parser) {
         this.parser = parser;
+    }
+
+    @Override
+    public void enterComment(Java8Parser.CommentContext ctx) { //TQ
+        TranslationUnit.outputNoTab("####");
+    }
+
+    @Override
+    public void exitComment(Java8Parser.CommentContext ctx) { //TQ
+
     }
 
     @Override
@@ -1325,7 +1332,7 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void enterBlockStatement(Java8Parser.BlockStatementContext ctx) {
-
+        //System.out.println("enterBlockStatement");
     }
 
     @Override
@@ -1355,7 +1362,18 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void enterStatement(Java8Parser.StatementContext ctx) {
+        //System.out.println("enterStatement");
 
+        String out = "";
+        if(ctx.parent instanceof Java8Parser.IfThenElseStatementContext) {
+            if(ctx.getChild(0) instanceof Java8Parser.IfThenElseStatementContext) {
+                out = "el";
+                TranslationUnit.outputWithTab(out);
+            }else {
+                out = "else:";
+                TranslationUnit.outputWithTab(out);
+            }
+        }
     }
 
     @Override
@@ -1365,17 +1383,23 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void enterStatementNoShortIf(Java8Parser.StatementNoShortIfContext ctx) {
-
+        //System.out.println("enterStatementNoShortIf");
     }
 
     @Override
     public void exitStatementNoShortIf(Java8Parser.StatementNoShortIfContext ctx) {
-
+       /*
+        String out = "";
+        if(ctx.parent instanceof Java8Parser.IfThenElseStatementContext || ctx.parent instanceof Java8Parser.IfThenElseStatementNoShortIfContext) {
+                out = "else:\n";
+            TranslationUnit.outputWithTab(out);
+        }
+        */
     }
 
     @Override
     public void enterStatementWithoutTrailingSubstatement(Java8Parser.StatementWithoutTrailingSubstatementContext ctx) {
-
+        //System.out.println("enterStatementWithoutTrailingSubstatement");
     }
 
     @Override
@@ -1385,7 +1409,7 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void enterEmptyStatement(Java8Parser.EmptyStatementContext ctx) {
-
+        //System.out.println("enterEmptyStatement");
     }
 
     @Override
@@ -1395,7 +1419,7 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void enterLabeledStatement(Java8Parser.LabeledStatementContext ctx) {
-
+        //System.out.println("enterLabeledStatement");
     }
 
     @Override
@@ -1405,7 +1429,7 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void enterLabeledStatementNoShortIf(Java8Parser.LabeledStatementNoShortIfContext ctx) {
-
+        //System.out.println("enterLabeledStatementNoShortIf");
     }
 
     @Override
@@ -1425,7 +1449,7 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void enterStatementExpression(Java8Parser.StatementExpressionContext ctx) {
-
+        //System.out.println("enterStatementExpression");
     }
 
     @Override
@@ -1435,33 +1459,44 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void enterIfThenStatement(Java8Parser.IfThenStatementContext ctx) {
-        String out = "if(" + "):";
+        //System.out.println("enterIfThenStatement");
+        String out = "if(";
         TranslationUnit.outputWithTab(out);
     }
 
     @Override
     public void exitIfThenStatement(Java8Parser.IfThenStatementContext ctx) {
         String out = "\n";
+        TranslationUnit.outputWithTab(out);
     }
 
     @Override
     public void enterIfThenElseStatement(Java8Parser.IfThenElseStatementContext ctx) {
-
+        //System.out.println("enterIfThenElseStatement");
+        String out = "if(";
+        if(ctx.parent.parent instanceof Java8Parser.IfThenElseStatementContext){
+            TranslationUnit.outputNoTab(out);
+        }else {
+            TranslationUnit.outputWithTab(out);
+        }
     }
 
     @Override
     public void exitIfThenElseStatement(Java8Parser.IfThenElseStatementContext ctx) {
-
+        String out = "\n";
+        TranslationUnit.outputWithTab(out);
     }
 
     @Override
-    public void enterIfThenElseStatementNoShortIf(Java8Parser.IfThenElseStatementNoShortIfContext ctx) {
-
+    public void enterIfThenElseStatementNoShortIf(Java8Parser.IfThenElseStatementNoShortIfContext ctx) {    //Not sure when this is called. -TQ
+        String out = "if(";
+        TranslationUnit.outputWithTab(out);
     }
 
     @Override
     public void exitIfThenElseStatementNoShortIf(Java8Parser.IfThenElseStatementNoShortIfContext ctx) {
-
+        String out = "\n";
+        TranslationUnit.outputWithTab(out);
     }
 
     @Override
@@ -2121,7 +2156,9 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void exitExpression(Java8Parser.ExpressionContext ctx) {
-
+        if(ctx.parent instanceof Java8Parser.IfThenStatementContext || ctx.parent instanceof Java8Parser.IfThenElseStatementContext || ctx.parent instanceof Java8Parser.IfThenElseStatementNoShortIfContext){
+            TranslationUnit.outputNoTab("):\n");
+        }
     }
 
     @Override
@@ -2171,7 +2208,7 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void exitAssignmentExpression(Java8Parser.AssignmentExpressionContext ctx) {
-        TranslationUnit.outputNoTab("\n");
+        //TranslationUnit.outputNoTab("\n");
     }
 
     @Override
@@ -2318,7 +2355,15 @@ public class ParserListener implements Java8ParserListener {
 
     @Override
     public void enterUnaryExpression(Java8Parser.UnaryExpressionContext ctx) {
-
+        String out;
+        if(ctx.unaryExpression() != null) {
+            if(ctx.getChild(0).getText().equals("-")){
+                out = "-";
+            }else {
+                out = "+";
+            }
+            TranslationUnit.outputNoTab(out);
+        }
     }
 
     @Override

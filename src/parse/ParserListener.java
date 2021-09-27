@@ -65,11 +65,11 @@ public class ParserListener implements Java8ParserListener {
     @Override
     public void enterIntegralType(Java8Parser.IntegralTypeContext ctx) {
         String out = ctx.getText();
-        if(out.equals("byte")) {out = "Byte";}
-        else if(out.equals("short")) {out = "Short";}
-        else if(out.equals("int")) {out = "Int";}
-        else if(out.equals("long")) {out = "Long";}
-        else if(out.equals("char")) {out = "Char";}
+        if(out.equals("byte")) {out = "";}
+        else if(out.equals("short")) {out = "";}
+        else if(out.equals("int")) {out = "";}
+        else if(out.equals("long")) {out = "";}
+        else if(out.equals("char")) {out = "";}
         TranslationUnit.outputNoTab(out);
 
     }
@@ -82,8 +82,8 @@ public class ParserListener implements Java8ParserListener {
     @Override
     public void enterFloatingPointType(Java8Parser.FloatingPointTypeContext ctx) {
         String out = ctx.getText();
-        if(out.equals("float")) {out = "Float";}
-        else if(out.equals("double")) {out = "Double";}
+        if(out.equals("float")) {out = "";}
+        else if(out.equals("double")) {out = "";}
         TranslationUnit.outputNoTab(out);
     }
 
